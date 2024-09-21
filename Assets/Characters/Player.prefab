@@ -78,6 +78,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -927199367670048503, guid: cb01db2707aa97a4e94efee03de71f52, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5115665549051153157}
+    - targetCorrespondingSourceObject: {fileID: -927199367670048503, guid: cb01db2707aa97a4e94efee03de71f52, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5620948094049576151}
   m_SourcePrefab: {fileID: 100100000, guid: cb01db2707aa97a4e94efee03de71f52, type: 3}
 --- !u!95 &2111518244622979505 stripped
 Animator:
@@ -106,3 +109,19 @@ MonoBehaviour:
   AtackSpeed: 1
   AttackRange: 2
   AnimatorController: {fileID: 2111518244622979505}
+  camera: {fileID: 0}
+  moveSpeed: 4
+  rotateSpeed: 15
+  inputHandler: {fileID: 0}
+--- !u!114 &5620948094049576151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5016100408427286232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9263c527cc2905498ba594eddcf8f58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -8,17 +6,21 @@ public class Player : MonoBehaviour
     public float Damage;
     public float AtackSpeed;
     public float AttackRange = 2;
-
-    private float lastAttackTime = 0;
-    private bool isDead = false;
     public Animator AnimatorController;
+
+    [SerializeField] private Camera camera;
+    [SerializeField] private float moveSpeed, rotateSpeed;
+    [SerializeField] private InputHandler inputHandler;
+
+    private Enemie closestEnemie = null;
+    private enum states { idle, attack, die };
+    private states currentState = states.idle;
+    private float lastAttackTime = 0;
 
     private void Update()
     {
-        if (isDead)
-        {
-            return;
-        }
+        if (currentState == states.die) return;
+        
 
         if (Hp <= 0)
         {
@@ -28,7 +30,7 @@ public class Player : MonoBehaviour
 
 
         var enemies = SceneManager.Instance.Enemies;
-        Enemie closestEnemie = null;
+        closestEnemie = null;
 
         for (int i = 0; i < enemies.Count; i++)
         {
@@ -51,34 +53,56 @@ public class Player : MonoBehaviour
             {
                 closestEnemie = enemie;
             }
-
         }
 
-        if (closestEnemie != null)
-        {
-            var distance = Vector3.Distance(transform.position, closestEnemie.transform.position);
-            if (distance <= AttackRange)
-            {
-                if (Time.time - lastAttackTime > AtackSpeed)
-                {
-                    //transform.LookAt(closestEnemie.transform);
-                    transform.transform.rotation = Quaternion.LookRotation(closestEnemie.transform.position - transform.position);
+        Vector3 target = new Vector3(inputHandler.InputVector.x, 0, inputHandler.InputVector.y);
 
-                    lastAttackTime = Time.time;
-                    closestEnemie.Hp -= Damage;
-                    AnimatorController.SetTrigger("Attack");
-                }
-            }
-        }
+        if (target == Vector3.zero) AnimatorController.SetFloat("Speed", 0);
+        
+        else RotateTo(MoveTo(target));
+    }
+
+    private Vector3 MoveTo(Vector3 target)
+    {
+        target = Quaternion.Euler(0, camera.gameObject.transform.eulerAngles.y, 0) * target;
+        
+        transform.position += target * moveSpeed * Time.deltaTime;
+
+        AnimatorController.SetFloat("Speed", moveSpeed);
+
+        return target;
+    }
+
+    private void RotateTo(Vector3 target)
+    {
+        var rotation = Quaternion.LookRotation(target);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, rotateSpeed);
     }
 
     private void Die()
     {
-        isDead = true;
+        currentState = states.die;
         AnimatorController.SetTrigger("Die");
 
         SceneManager.Instance.GameOver();
     }
 
+    public void Attack()
+    {
+        if (closestEnemie == null ||
+            Time.time - lastAttackTime < AtackSpeed ||
+            currentState == states.die) return;
 
+
+        var distance = Vector3.Distance(transform.position, closestEnemie.transform.position);
+
+        if (distance > AttackRange) return;
+
+
+        transform.transform.rotation = Quaternion.LookRotation(closestEnemie.transform.position - transform.position);
+
+        lastAttackTime = Time.time;
+        closestEnemie.Hp -= Damage;
+        AnimatorController.SetTrigger("Attack");
+    }
 }

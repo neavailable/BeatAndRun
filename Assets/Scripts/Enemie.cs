@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -22,7 +20,6 @@ public class Enemie : MonoBehaviour
     {
         SceneManager.Instance.AddEnemie(this);
         Agent.SetDestination(SceneManager.Instance.Player.transform.position);
-
     }
 
     private void Update()
@@ -56,11 +53,7 @@ public class Enemie : MonoBehaviour
             Agent.SetDestination(SceneManager.Instance.Player.transform.position);
         }
         AnimatorController.SetFloat("Speed", Agent.speed); 
-        Debug.Log(Agent.speed);
-
     }
-
-
 
     private void Die()
     {
@@ -68,5 +61,4 @@ public class Enemie : MonoBehaviour
         isDead = true;
         AnimatorController.SetTrigger("Die");
     }
-
 }
