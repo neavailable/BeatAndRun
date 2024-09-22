@@ -5,23 +5,34 @@ using UnityEngine;
 public class SceneManager : MonoBehaviour
 {
     public static SceneManager Instance;
-
     public Player Player;
-    public List<Enemie> Enemies;
-    public GameObject Lose;
-    public GameObject Win;
+    public List<Enemie> Enemies { get; private set; }
 
-    private int currWave = 0;
+    [SerializeField] private GameObject Lose;
+    [SerializeField] private GameObject Win;
+    [SerializeField] private GameObject MiniGoblin;
     [SerializeField] private LevelConfig Config;
+    private int currWave = 0;
 
     private void Awake()
     {
         Instance = this;
+        Enemies = new List<Enemie>();
     }
 
     private void Start()
     {
         SpawnWave();
+    }
+
+    private void OnEnable()
+    {
+        MegaEnemy.MegaEnemyDied += CreateMiniGoblins;
+    }
+
+    private void OnDisable()
+    {
+        MegaEnemy.MegaEnemyDied -= CreateMiniGoblins;
     }
 
     public void AddEnemie(Enemie enemie)
@@ -32,7 +43,8 @@ public class SceneManager : MonoBehaviour
     public void RemoveEnemie(Enemie enemie)
     {
         Enemies.Remove(enemie);
-        if(Enemies.Count == 0)
+        Debug.Log(Enemies.Count);
+        if (Enemies.Count == 0)
         {
             SpawnWave();
         }
@@ -41,6 +53,28 @@ public class SceneManager : MonoBehaviour
     public void GameOver()
     {
         Lose.SetActive(true);
+        StopEnemies();
+    }
+
+    public void Reset()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+    }
+
+    private void CreateMiniGoblins(Vector3 position)
+    {
+        int goblinsCount = 2;
+
+
+        CreateMiniGoblin(new Vector3(position.x, position.y, position.z));
+        CreateMiniGoblin(new Vector3(position.x + 1, position.y, position.z + 1));
+    }
+
+    private void CreateMiniGoblin(Vector3 position)
+    {
+        GameObject miniGoblinInstantiate = Instantiate(MiniGoblin, position, Quaternion.identity);
+
+        miniGoblinInstantiate.transform.LookAt(Player.transform.position);
     }
 
     private void SpawnWave()
@@ -58,13 +92,10 @@ public class SceneManager : MonoBehaviour
             Instantiate(character, pos, Quaternion.identity);
         }
         currWave++;
-
     }
 
-    public void Reset()
+    private void StopEnemies()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+        foreach(var enemy in Enemies) enemy.Stop();
     }
-    
-
 }

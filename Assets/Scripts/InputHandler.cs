@@ -10,6 +10,8 @@ public class InputHandler : MonoBehaviour
         var vecticalMoving = Input.GetAxis("Vertical");
 
         InputVector = new Vector2(horizontalMoving, vecticalMoving);
+
+        if (InputVector.magnitude > 1) InputVector = InputVector.normalized;
     }
 
     private void Update() => CatchMoving();
