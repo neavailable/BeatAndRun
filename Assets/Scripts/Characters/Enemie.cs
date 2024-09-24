@@ -58,7 +58,6 @@ public class Enemie : Character
         var distance = Vector3.Distance(transform.position, SceneManager.Instance.Player.transform.position);
 
         float currentSpeed;
-
         if (distance <= AttackRange)
         {
             Agent.isStopped = true;

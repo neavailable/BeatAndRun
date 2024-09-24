@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(InputHandler))]
+[RequireComponent(typeof(InputHandler), typeof(BoxCollider))]
 [DisallowMultipleComponent]
 
 public class Player : Character
@@ -154,7 +154,7 @@ public class Player : Character
         transform.transform.rotation = Quaternion.LookRotation(closestEnemie.transform.position - transform.position);
 
         closestEnemie.Hp -= damage;
-        Hp += 5;
+        Hp++;
 
         return;
     }

@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(RectTransform), typeof(CanvasRenderer), typeof(Text))]
+
 public class WavesCounterContoller : MonoBehaviour
 {
     private const int wavesNumber = 4;
