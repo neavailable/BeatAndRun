@@ -14,5 +14,8 @@ public class InputHandler : MonoBehaviour
         if (InputVector.magnitude > 1) InputVector = InputVector.normalized;
     }
 
-    private void Update() => CatchMoving();
+    private void Update()
+    {
+        CatchMoving();
+    }
 }

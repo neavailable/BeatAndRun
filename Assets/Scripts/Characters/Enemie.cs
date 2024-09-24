@@ -7,9 +7,10 @@ using UnityEngine.AI;
 public class Enemie : Character
 {
     public NavMeshAgent Agent;
-    public static Action ChangeHp;
+    public static Action<float> ChangePlayerHp;
 
     private float currentSpeed;
+    private float addHp = 10;
 
     protected void Awake()
     {
@@ -39,11 +40,9 @@ public class Enemie : Character
     {
         base.Die();
 
-        ChangeHp?.Invoke();
+        ChangePlayerHp?.Invoke(addHp);
         SceneManager.Instance.RemoveEnemie(this);
     }
-
-    protected Enemie GetInstance() => this;
 
     public void Stop()
     {
@@ -66,10 +65,9 @@ public class Enemie : Character
             if (Time.time - lastAttackTime > AtackSpeed)
             {
                 lastAttackTime = Time.time;
-                SceneManager.Instance.Player.Hp -= damage;
                 currentState = states.attack;
                 AnimatorController.SetTrigger(trigger);
-                ChangeHp?.Invoke();
+                ChangePlayerHp?.Invoke(-Damage);
             }
         }
         else

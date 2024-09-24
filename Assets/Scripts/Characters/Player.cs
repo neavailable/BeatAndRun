@@ -55,18 +55,25 @@ public class Player : Character
     {
         LiteAttackButtonClicked.LiteAttackButtonClicked_ += LiteAttack;
         DoubleAttackButtonClicked.DoubleAttackButtonClicked_ += DoubleAttack;
-        Enemie.ChangeHp += EnemyDead;
+        Enemie.ChangePlayerHp += ChangeHpMethod;
     }
 
     private void OnDisable()
     {
         LiteAttackButtonClicked.LiteAttackButtonClicked_ -= LiteAttack;
         DoubleAttackButtonClicked.DoubleAttackButtonClicked_ -= DoubleAttack;
-        Enemie.ChangeHp -= EnemyDead;
+        Enemie.ChangePlayerHp -= ChangeHpMethod;
     }
 
-    private void EnemyDead()
+    private void ChangeHpMethod(float damage)
     {
+        Hp += damage;
+
+        if (Hp > MaxHp)
+        {
+            Hp = MaxHp;
+        }
+
         ChangeHp?.Invoke(Hp, MaxHp);
     }
 
@@ -154,7 +161,6 @@ public class Player : Character
         transform.transform.rotation = Quaternion.LookRotation(closestEnemie.transform.position - transform.position);
 
         closestEnemie.Hp -= damage;
-        Hp++;
 
         return;
     }
