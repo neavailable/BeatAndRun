@@ -1,7 +1,11 @@
+using System;
+
 public class LiteAttackButtonClicked : ButtonClicked
 {
-    protected override void ButtonEvent()
+    public static Action LiteAttackButtonClicked_;
+
+    public void ButtonEvent()
     {
-        Player.Attack();
+        LiteAttackButtonClicked_?.Invoke();
     }
 }

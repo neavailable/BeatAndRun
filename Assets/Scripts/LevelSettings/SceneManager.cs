@@ -5,6 +5,8 @@ using UnityEngine;
 public class SceneManager : MonoBehaviour
 {
     public static SceneManager Instance;
+    public static System.Action<int> NewWaveStarted;
+
     public Player Player;
     public List<Enemie> Enemies { get; private set; }
 
@@ -12,7 +14,9 @@ public class SceneManager : MonoBehaviour
     [SerializeField] private GameObject Win;
     [SerializeField] private GameObject MiniGoblin;
     [SerializeField] private LevelConfig Config;
+
     private int currWave = 0;
+
 
     private void Awake()
     {
@@ -43,7 +47,7 @@ public class SceneManager : MonoBehaviour
     public void RemoveEnemie(Enemie enemie)
     {
         Enemies.Remove(enemie);
-        Debug.Log(Enemies.Count);
+
         if (Enemies.Count == 0)
         {
             SpawnWave();
@@ -63,14 +67,15 @@ public class SceneManager : MonoBehaviour
 
     private void CreateMiniGoblins(Vector3 position)
     {
-        int goblinsCount = 2;
+        int goblinAmount = 2;
 
-
-        CreateMiniGoblin(new Vector3(position.x, position.y, position.z));
-        CreateMiniGoblin(new Vector3(position.x + 1, position.y, position.z + 1));
+        for (int i = 0; i < goblinAmount; i++)
+        {
+            CreateOneMiniGoblin(new Vector3(position.x + i, position.y, position.z + i));
+        }
     }
 
-    private void CreateMiniGoblin(Vector3 position)
+    private void CreateOneMiniGoblin(Vector3 position)
     {
         GameObject miniGoblinInstantiate = Instantiate(MiniGoblin, position, Quaternion.identity);
 
@@ -88,10 +93,11 @@ public class SceneManager : MonoBehaviour
         var wave = Config.Waves[currWave];
         foreach (var character in wave.Characters)
         {
-            Vector3 pos = new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10));
+            Vector3 pos = new Vector3(Random.Range(-15, 15), 0, Random.Range(-15, 15));
             Instantiate(character, pos, Quaternion.identity);
         }
         currWave++;
+        NewWaveStarted?.Invoke(currWave);
     }
 
     private void StopEnemies()

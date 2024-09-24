@@ -104,13 +104,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d0d768a0d357334286e5a146ac21b9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Hp: 15
-  Damage: 1
+  Hp: 400
+  Damage: 3
   AtackSpeed: 1
   AttackRange: 2
   AnimatorController: {fileID: 2111518244622979505}
   camera: {fileID: 0}
-  moveSpeed: 4
+  moveSpeed: 4.3
   rotateSpeed: 15
   inputHandler: {fileID: 8735401585281752411}
 --- !u!114 &8735401585281752411

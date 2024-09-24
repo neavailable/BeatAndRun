@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -6,6 +7,7 @@ using UnityEngine.AI;
 public class Enemie : Character
 {
     public NavMeshAgent Agent;
+    public static Action ChangeHp;
 
     private float currentSpeed;
 
@@ -30,13 +32,14 @@ public class Enemie : Character
             return;
         }
 
-        Attack();
+        Attack("Attack", Damage);
     }
 
     protected override void Die()
     {
         base.Die();
 
+        ChangeHp?.Invoke();
         SceneManager.Instance.RemoveEnemie(this);
     }
 
@@ -50,11 +53,12 @@ public class Enemie : Character
         currentState = states.endOfGame;
     }
 
-    public override void Attack()
+    public override void Attack(string trigger, float damage)
     {
         var distance = Vector3.Distance(transform.position, SceneManager.Instance.Player.transform.position);
 
         float currentSpeed;
+
         if (distance <= AttackRange)
         {
             Agent.isStopped = true;
@@ -63,9 +67,10 @@ public class Enemie : Character
             if (Time.time - lastAttackTime > AtackSpeed)
             {
                 lastAttackTime = Time.time;
-                SceneManager.Instance.Player.Hp -= Damage;
+                SceneManager.Instance.Player.Hp -= damage;
                 currentState = states.attack;
-                AnimatorController.SetTrigger("Attack");
+                AnimatorController.SetTrigger(trigger);
+                ChangeHp?.Invoke();
             }
         }
         else
@@ -78,5 +83,10 @@ public class Enemie : Character
             currentSpeed = Agent.speed;
         }
         AnimatorController.SetFloat("Speed", currentSpeed);
+    }
+
+    private void LiteAttack()
+    {
+        Attack("attack", Damage);
     }
 }

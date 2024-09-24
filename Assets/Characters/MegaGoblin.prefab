@@ -22,7 +22,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: cb01db2707aa97a4e94efee03de71f52, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.025
+      value: 0.03
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: cb01db2707aa97a4e94efee03de71f52, type: 3}
       propertyPath: m_LocalPosition.x
@@ -121,8 +121,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6976cd6059e8486498dc521de90fa6bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Hp: 2
-  Damage: 2
+  Hp: 7
+  Damage: 7
   AtackSpeed: 1
   AttackRange: 2
   AnimatorController: {fileID: 7475179364339281051}

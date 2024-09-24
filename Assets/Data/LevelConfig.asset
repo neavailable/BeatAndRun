@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: LevelConfig
   m_EditorClassIdentifier: 
   Waves:
-  - {fileID: 11400000, guid: 244a5bf9e7f852946a32b13346255ccb, type: 2}
-  - {fileID: 11400000, guid: 700688092b49f294bb01143483922dd4, type: 2}
   - {fileID: 11400000, guid: 61d2ff3887d8cd04f97de843983e4a0c, type: 2}
+  - {fileID: 11400000, guid: 88cc7cb99f36fc24fb24431b49ad9d40, type: 2}
+  - {fileID: 11400000, guid: 991af78f6763f194a9847249deb295e3, type: 2}
+  - {fileID: 11400000, guid: a2cf49ba84b8f3e42b0ca837d9e947c3, type: 2}
